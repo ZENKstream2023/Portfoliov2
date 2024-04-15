@@ -1,0 +1,37 @@
+						"use strict";
+const express = require("express");
+const router = express.Router();
+const profileController = require("../controllers/profile");
+const ChannelController = require("../controllers/channel");
+
+// Ruta para obtener información de un canal por su ID de usuario de Twitch
+router.get("/api/channels", ChannelController.getChannelByHashToken);
+
+// Rutas de Perfil
+router.post("/profile", profileController.createProfile);
+router.get("/profile/:userId", profileController.getProfile);
+router.delete("/profile/:userId", profileController.deleteProfile);
+
+router.get('/api/analytics/games', async (req, res) => {
+  const hashedAccessToken = req.cookies.accessToken; // Obtiene el hashedAccessToken de las cookies
+
+  try {
+    const datosAnaliticos = await obtenerDatosAnaliticosJuegosParaUsuario(hashedAccessToken);
+    res.json(datosAnaliticos);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+
+// Define la ruta para eliminar las cookies
+router.post('/api/logout', (req, res) => {
+    // Elimina la cookie 'accessToken'
+    res.clearCookie('accessToken');
+    // Elimina la cookie 'connect.sid'
+    res.clearCookie('connect.sid');
+    // Envía una respuesta al cliente
+    res.send('Cookies eliminadas');
+});
+
+module.exports = router;
