@@ -55,7 +55,7 @@ app.use("/assets/js", (req, res, next) => {
   // Manejar todas las demás rutas y redirigirlas al archivo de entrada del frontend
 // Middleware para excluir rutas que comiencen por "/api"
 app.use((req, res, next) => {
-    if (req.originalUrl.startsWith("/api")) {
+    if (req.originalUrl.startsWith("/api") || req.originalUrl.startsWith("/signup") || req.originalUrl.startsWith("/signin")) {
         next();
     } else {
         // Construir la ruta absoluta al archivo index.html del frontend
@@ -63,9 +63,8 @@ app.use((req, res, next) => {
         res.sendFile(indexPath);
     }
 });
-  
   // Rutas API
-  app.use("/api", routes);
+  app.use("/", routes);
   app.use((req, res, next) => {
 	  res.setHeader("Strict-Transport-Security", "max-age=31536000;");
 	  next();
@@ -75,9 +74,6 @@ app.use((req, res, next) => {
 	console.log(req.body);
 	bodyParser.json()(req, res, next);
 });
-
-// Rutas API
-app.use("/api", routes);
 
 // Conexión a la base de datos MongoDB
 mongoose

@@ -6,10 +6,11 @@ const TokenBlacklist = require("../models/TokenBlacklist");
 const secretKey = process.env.MY_SECRET;
 
 //yourSecretKey
-const controller = {
+const UserController = {
 
 	signup: async (req, res) => {
 		const { email, password } = req.body;
+        console.log(email, password)
 		try {
 			// Verifica si se proporcionó una contraseña
 			if (!password) {
@@ -31,16 +32,24 @@ const controller = {
 	
 			// Genera un token para el usuario
 			const token = jwt.sign({ email }, secretKey, { expiresIn: "1h" });
-	
+            res.cookie("accessToken", token, {
+				httpOnly: true,
+				secure: true,
+			});
 			// Crea una nueva instancia de usuario
 			const user = new User({
 				email: email,
 				password: password,
 				accessToken: token,
 			});
-	
+            console.log("user", user)
 			// Guarda el usuario en la base de datos
 			const userStored = await user.save();
+            // Agrega el token como una cookie
+            console.log("userstored", userStored)
+            console.log("token", token)
+
+
 			if (!userStored) {
 				// Si no se puede guardar el usuario, devuelve un error
 				return res.status(500).send({
@@ -48,15 +57,6 @@ const controller = {
 					message: "El usuario no se ha guardado",
 				});
 			}
-	
-			// Agrega el token como una cookie
-			res.cookie("accessToken", token, {
-				httpOnly: true,
-				secure: false,
-			});
-	
-			// Redirecciona al panel de control
-			res.redirect("/panel");
 		} catch (error) {
 			console.error("Error en el controlador signup:", error);
 	
@@ -138,9 +138,9 @@ const controller = {
 		}
 	}
 };
-module.exports = controller;
+module.exports = UserController;
 
-/* 
+/*
 'use strict';
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -164,7 +164,7 @@ const ERROR_MESSAGES = {
     LOGOUT_ERROR: "Error al cerrar sesión"
 };
 
-const controller = {
+const UserController = {
     // Función para registrar un nuevo usuario
     signup: async ({ body: { email, password } }, res) => {
         try {
@@ -300,5 +300,5 @@ const controller = {
     }
 };
 
-module.exports = controller;
-*/
+module.exports = UserController;
+ */
