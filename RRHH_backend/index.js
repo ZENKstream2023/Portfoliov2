@@ -1,6 +1,7 @@
 "use strict";
 // Definir constantes
 const express = require("express");
+const path = require("path");
 const cookieParser = require("cookie-parser");
 const http = require("http"); // Cambio a http en lugar de https
 const fs = require("fs");
@@ -22,7 +23,7 @@ const { verifyToken } = require("./security/authMiddleware"); // Importa el midd
 app.use(verifyToken);
 // CORS
 /*const corsOptions = {
-	origin: "*",
+	origin: "http://localhost:8080",
 	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
 	credentials: true,
 	optionsSuccessStatus: 204,
@@ -33,24 +34,23 @@ app.use(cors(corsOptions));
 app.use(bodyParser.json());
 
 // Sirve el frontend estático desde /var/www/frontend/dist
-app.use(express.static("../Vue_FrontendV2/dist"));
+app.use(express.static(path.join(__dirname, "../Vue_FrontendV2/dist")));
 // Definir la política CSP
 app.use((req, res, next) => {
-	res.setHeader('Content-Security-Policy', "img-src 'self' ");
-	next();
-  });
-  
+    res.setHeader('Content-Security-Policy', "script-src 'self' https://cdn.jsdelivr.net;");
+    next();
+});
   // Manejar todas las demás rutas y redirigirlas al archivo de entrada del frontend
-  // Middleware para excluir rutas que comiencen por "/api"
-  app.use((req, res, next) => {
-	  if (req.originalUrl.startsWith("/api")) {
-		  // Si la ruta comienza con "/api", pasa al siguiente middleware
-		  next();
-	  } else {
-		  // Si la ruta no comienza con "/api", redirige al archivo de entrada del frontend
-		  res.sendFile(path.join("../Vue_FrontendV2/dist/", "index.html"));
-	  }
-  });
+// Middleware para excluir rutas que comiencen por "/api"
+app.use((req, res, next) => {
+    if (req.originalUrl.startsWith("/api")) {
+        next();
+    } else {
+        // Construir la ruta absoluta al archivo index.html del frontend
+        const indexPath = path.join(__dirname, "../Vue_FrontendV2/dist", "index.html");
+        res.sendFile(indexPath);
+    }
+});
   
   // Rutas API
   app.use("/api", routes);
