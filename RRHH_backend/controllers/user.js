@@ -209,7 +209,7 @@ const UserController = {
             // Agrega el token como una cookie
             res.cookie("accessToken", token, {
                 httpOnly: true,
-                secure: false
+                secure: true
             });
 
             // Redirecciona al panel de control
@@ -252,7 +252,7 @@ const UserController = {
 
             // Genera un token de acceso
             const token = jwt.sign({ email }, secretKey, { expiresIn: "1h" });
-            res.cookie("accessToken", token, { httpOnly: true, secure: false });
+            res.cookie("accessToken", token, { httpOnly: true, secure: true });
 
             // Agrega el token al usuario y guarda los cambios
             user.accessToken.push(token);

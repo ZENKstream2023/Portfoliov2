@@ -1,9 +1,9 @@
-"use strict";
+'use strict';
 // Definir constantes
 const express = require("express");
 const path = require("path");
 const cookieParser = require("cookie-parser");
-const http = require("http"); // Cambio a http en lugar de https
+const https = require('https'); // Importa el módulo HTTPS
 const fs = require("fs");
 const helmet = require("helmet");
 const bodyParser = require("body-parser");
@@ -17,16 +17,20 @@ const User = require("./models/user");
 app.use(bodyParser.json());
 app.use(cookieParser());
 app.use(helmet());
+const options = {
+    key: fs.readFileSync('localhost.key'), // Lee el archivo de clave privada
+    cert: fs.readFileSync('localhost.crt') // Lee el archivo de certificado
+};
 const { verifyToken } = require("./security/authMiddleware"); // Importa el middleware de autenticación
 
 // Middleware de autenticación global
 app.use(verifyToken);
 // CORS
 /*const corsOptions = {
-	origin: "http://localhost:8080",
-	methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
-	credentials: true,
-	optionsSuccessStatus: 204,
+    origin: "http://localhost:8080",
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
+    optionsSuccessStatus: 204,
 };
 
 app.use(cors(corsOptions));
@@ -52,7 +56,7 @@ app.use("/assets/js", (req, res, next) => {
     next();
 }, express.static(path.join(__dirname, "assets/js")));
 
-  // Manejar todas las demás rutas y redirigirlas al archivo de entrada del frontend
+// Manejar todas las demás rutas y redirigirlas al archivo de entrada del frontend
 // Middleware para excluir rutas que comiencen por "/api"
 app.use((req, res, next) => {
     if (req.originalUrl.startsWith("/api") || req.originalUrl.startsWith("/signup") || req.originalUrl.startsWith("/signin")) {
@@ -63,38 +67,38 @@ app.use((req, res, next) => {
         res.sendFile(indexPath);
     }
 });
-  // Rutas API
-  app.use("/", routes);
-  app.use((req, res, next) => {
-	  res.setHeader("Strict-Transport-Security", "max-age=31536000;");
-	  next();
-  });
+// Rutas API
+app.use("/", routes);
+app.use((req, res, next) => {
+    res.setHeader("Strict-Transport-Security", "max-age=31536000;");
+    next();
+});
 
 app.use((req, res, next) => {
-	console.log(req.body);
-	bodyParser.json()(req, res, next);
+    console.log(req.body);
+    bodyParser.json()(req, res, next);
 });
 
 // Conexión a la base de datos MongoDB
 mongoose
-	.connect(process.env.MONGODB_URI)
-	.then(() => {
-		console.log("Conexión a la base de datos establecida correctamente");
-	})
-	.catch((error) => {
-		console.error("Error al conectar a la base de datos:", error.message);
-	});
+    .connect(process.env.MONGODB_URI)
+    .then(() => {
+        console.log("Conexión a la base de datos establecida correctamente");
+    })
+    .catch((error) => {
+        console.error("Error al conectar a la base de datos:", error.message);
+    });
 
 // Middleware de manejo de errores
 app.use((err, req, res, next) => {
-	console.error(err.stack);
-	res.status(500).json({
-		error: "Error interno del servidor",
-		message: err.message,
-	});
+    console.error(err.stack);
+    res.status(500).json({
+        error: "Error interno del servidor",
+        message: err.message,
+    });
 });
 
-// Inicia el servidor HTTP en lugar del servidor HTTPS
-http.createServer(app).listen(port, () => {
-	console.log("El servidor está online");
+// Crear el servidor HTTPS
+https.createServer(options, app).listen(port, () => {
+    console.log("El servidor está online"); // Inicia el servidor HTTPS en el puerto especificado
 });

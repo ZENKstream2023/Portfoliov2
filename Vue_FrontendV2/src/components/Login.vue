@@ -66,7 +66,7 @@ export default {
     const formType = ref('signup'); // Por defecto, muestra el formulario de registro
     const handleSignIn = async () => {
       try {
-        const response = await axios.post('http://localhost:3200/signin', {
+        const response = await axios.post('https://localhost:3200/signin', {
           email: email.value,
           password: password.value
         });
@@ -79,7 +79,7 @@ export default {
     };
 const createAccount = async () => {
       try {
-        const response = await axios.post('http://localhost:3200/signup', {
+        const response = await axios.post('https://localhost:3200/signup', {
           email: email.value,
           password: password.value
         });
