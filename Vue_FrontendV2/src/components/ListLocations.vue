@@ -223,7 +223,7 @@ export default {
     getStores() {
       //  Se inicializa la variable 'stores' con una copia local de las tiendas de la base de datos, por si fallase en algún momento la conexión con la API o con la base de datos
       this.stores = sucursales;
-      fetch("http://localhost:8081/api/stores")
+      fetch("http://localhost:3200/api/sucursales")
         .then((r) => r.json())
         .then((j) => {
           this.stores = [];

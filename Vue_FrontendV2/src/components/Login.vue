@@ -55,26 +55,42 @@
 
 <script>
 import { ref} from 'vue';
-//import axios from 'axios';
-//import Global from '../Global'
+import axios from 'axios';
+import Global from '../Global'
 
 export default {
   name: "LoginView",
   setup() {
-   // const url = ref(Global);
+   const url = ref(Global);
     const email = ref(null);
     const password = ref(null);
 
-
     const formType = ref('signup'); // Por defecto, muestra el formulario de registro
-
-const handleSignIn = async () => {
-  // Lógica para manejar el inicio de sesión
-};
-
+    const handleSignIn = async () => {
+      try {
+        const response = await axios.post(url.value.url +'signin', {
+          email: email.value,
+          password: password.value
+        });
+        // Manejar la respuesta del backend si es necesario
+        console.log(response)
+      } catch (error) {
+        // Manejar el error si la solicitud falla
+        console.log(error)
+      }
+    };
 const createAccount = async () => {
-  // Lógica para crear una cuenta
-};
+      try {
+        const response = await axios.post(url.value.url + 'signup', {
+          email: email.value,
+          password: password.value
+        });
+        // Manejar la respuesta del backend si es necesario
+        console.log(response)
+      } catch (error) {
+        // Manejar el error si la solicitud falla
+      }
+    };
 
 
 const setFormType = (type) => {

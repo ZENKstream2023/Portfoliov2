@@ -30,7 +30,7 @@
           >Sucursales</a
         >
         <a style="color: black" class="nav-link fw-bold py-1" href="/login"
-          >Entrar</a
+          >Acceder</a
         >
         <!--<a style="color:black;" class="nav-link fw-bold py-1" href="/change">Modificar datos</a>-->
       </nav>
