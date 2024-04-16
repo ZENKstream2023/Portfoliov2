@@ -52,10 +52,10 @@ const verifyToken = async (req, res, next) => {
 		try {
 			// Obtiene el token almacenado desde la base de datos
 			const channel = await Channel.findOne({
-				hashedAccessToken: accessToken,
+				accessToken: accessToken,
 			}).select("accessToken");
 			// Compara el token recibido en la cabecera con el token almacenado en tu base de datos usando bcrypt.compare
-			const match = await bcrypt.compare(channel.accessToken, accessToken);
+			const match = await bcrypt.compare(channel.password, accessToken);
 
 			if (!match) {
 				return res.status(401).json({ message: "Token no válido." });
