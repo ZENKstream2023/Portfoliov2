@@ -46,7 +46,7 @@ const verifyToken = async (req, res, next) => {
 		// Verifica si hay un token
 		if (!accessToken) {
 			// return res.status(403).json({ message: "Acceso no autorizado. Token no proporcionado." });
-			return res.redirect("/api/auth/twitch");
+			return res.redirect("/login");
 		}
 
 		try {
@@ -65,7 +65,7 @@ const verifyToken = async (req, res, next) => {
 			next();
 		} catch (error) {
 			console.error("Error al verificar el token:", error);
-			return res.redirect("/api/auth/twitch");
+			return res.redirect("/login");
 			//return res.status(500).json({ message: "Error del servidor al verificar el token." });
 		}
 	} else {
