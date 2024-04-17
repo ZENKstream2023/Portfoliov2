@@ -71,9 +71,8 @@ export default {
           email: email.value,
           password: password.value
         });
-        // Manejar la respuesta del backend si es necesario
-        console.log(response)
-        if(response.status === "ok")
+        
+        if(response.data.status === "ok")
         {
           router.push('/panel');
         }
@@ -88,9 +87,8 @@ const createAccount = async () => {
           email: email.value,
           password: password.value
         });
-        // Manejar la respuesta del backend si es necesario
-        console.log(response)
-        if(response.status === "ok")
+        
+        if(response.data.status === "ok")
         {
           router.push('/panel');
         }

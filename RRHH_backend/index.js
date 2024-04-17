@@ -35,7 +35,6 @@ const corsOptions = {
 
 app.use(cors(corsOptions));
 
-app.use(bodyParser.json());
 // Content Security Policy
 app.use((req, res, next) => {
     res.setHeader('Content-Security-Policy', "script-src 'self' https://cdn.jsdelivr.net/; img-src 'self' http://localhost:3200;");
@@ -67,16 +66,16 @@ app.use((req, res, next) => {
         res.sendFile(indexPath);
     }
 });
+app.use((req, res, next) => {
+    console.log(req.body);
+    bodyParser.json()(req, res, next);
+});
+
 // Rutas API
 app.use("/", routes);
 app.use((req, res, next) => {
     res.setHeader("Strict-Transport-Security", "max-age=31536000;");
     next();
-});
-
-app.use((req, res, next) => {
-    console.log(req.body);
-    bodyParser.json()(req, res, next);
 });
 
 // Conexión a la base de datos MongoDB
