@@ -26,15 +26,15 @@ const { verifyToken } = require("./security/authMiddleware"); // Importa el midd
 // Middleware de autenticación global
 app.use(verifyToken);
 // CORS
-/*const corsOptions = {
-    origin: "http://localhost:8080",
+const corsOptions = {
+    origin: "https://localhost:3200",
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
     optionsSuccessStatus: 204,
 };
 
 app.use(cors(corsOptions));
-*/
+
 app.use(bodyParser.json());
 // Content Security Policy
 app.use((req, res, next) => {

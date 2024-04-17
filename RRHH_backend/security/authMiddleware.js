@@ -1,7 +1,8 @@
-require("dotenv").config();
-const bcrypt = require("bcrypt");
-const allowedRoutes = process.env.ALLOWED_ROUTES.split(",");
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcrypt');
 const Channel = require("../models/user");
+const secretKey = process.env.MY_SECRET;
+const allowedRoutes = process.env.ALLOWED_ROUTES.split(",");
 
 const isPathAllowed = (path) => {
     // Verifica si la ruta está permitida sin autenticación
@@ -29,53 +30,43 @@ const verifyToken = async (req, res, next) => {
     if (isPathAllowed( requestedPath)) {
         return next();
     }
-	// Obtener la cookie 'accessToken' de la cabecera de la solicitud
-	const cookies = req.headers.cookie;
-	// Verificar si hay cookies en la cabecera
-	if (cookies) {
-		// Separar las cookies en un objeto clave-valor
-		const cookieObj = cookies.split(";").reduce((acc, cookie) => {
-			const [key, value] = cookie.trim().split("=");
-			acc[key] = value;
-			return acc;
-		}, {});
+    // Obtener el token de la cookie 'accessToken' en la cabecera de la solicitud
+    const accessToken = req.cookies.accessToken;
 
-		// Obtener el valor de la cookie 'accessToken'
-		const accessToken = decodeURIComponent(cookieObj.accessToken);
+    // Verificar si hay un token
+    if (!accessToken) {
+        return res.redirect("/login");
+    }
 
-		// Verifica si hay un token
-		if (!accessToken) {
-			// return res.status(403).json({ message: "Acceso no autorizado. Token no proporcionado." });
-			return res.redirect("/login");
-		}
+    try {
+        // Verificar y decodificar el token
+        const decoded = jwt.verify(accessToken, secretKey);
+			console.log("DECODED", decoded)
+        // Extraer el valor original del token
+        const hashedEmail = decoded.hashedEmail;
+			console.log("HASHEDEMAIL ",hashedEmail)
+        // Buscar el usuario en la base de datos usando el valor original del token
+        const user = await Channel.findOne({ hashedEmail });
+			console.log("USER ",user)
+        // Verificar si se encontró un usuario
+        if (!user) {
+            return res.status(401).json({ message: "Usuario no encontrado." });
+        }
 
-		try {
-			// Obtiene el token almacenado desde la base de datos
-			const channel = await Channel.findOne({
-				accessToken: accessToken,
-			}).select("accessToken");
-			// Compara el token recibido en la cabecera con el token almacenado en tu base de datos usando bcrypt.compare
-			const match = await bcrypt.compare(channel.password, accessToken);
+        // Comparar el valor original del token con el email hasheado del usuario
+        const match = await bcrypt.compare(user.email, hashedEmail);
+			console.log(match)
+        // Verificar si hay coincidencia
+        if (!match) {
+            return res.status(401).json({ message: "Token no válido." });
+        }
 
-			if (!match) {
-				return res.status(401).json({ message: "Token no válido." });
-			}
-
-			// Si el token coincide, puedes permitir que la solicitud continúe
-			next();
-		} catch (error) {
-			console.error("Error al verificar el token:", error);
-			return res.redirect("/login");
-			//return res.status(500).json({ message: "Error del servidor al verificar el token." });
-		}
-	} else {
-		return res
-			.status(403)
-			.json({
-				message:
-					"Acceso no autorizado. No se encontraron cookies en la cabecera.",
-			});
-	}
+        // Si todo está bien, permitir que la solicitud continúe
+        next();
+    } catch (error) {
+        console.error("Error al verificar el token:", error);
+        return res.redirect("/login");
+    }
 };
 
 module.exports = { verifyToken };

@@ -29,9 +29,14 @@ const UserController = {
 					message: "La dirección de correo electrónico ya está registrada",
 				});
 			}
-	
-			// Genera un token para el usuario
-			const token = jwt.sign({ email }, secretKey, { expiresIn: "1h" });
+            // Hashea el email
+            const hashedEmail = await bcrypt.hash(email, 10);
+            console.log("EMAIL HASHEADO: ", hashedEmail);
+			// Genera un token para el email Hasheado
+			const token = jwt.sign({ hashedEmail }, secretKey, { expiresIn: "1h" });
+            console.log("CREO EL TOKEN: ", token);
+
+            // Agrego el token de acceso a las Cookies
             res.cookie("accessToken", token, {
 				httpOnly: true,
 				secure: true,
@@ -40,15 +45,14 @@ const UserController = {
 			const user = new User({
 				email: email,
 				password: password,
-				accessToken: token,
+                hashedEmail: hashedEmail
 			});
             console.log("user", user)
 			// Guarda el usuario en la base de datos
 			const userStored = await user.save();
             // Agrega el token como una cookie
             console.log("userstored", userStored)
-            console.log("token", token)
-
+            res.redirect("/panel");
 
 			if (!userStored) {
 				// Si no se puede guardar el usuario, devuelve un error
