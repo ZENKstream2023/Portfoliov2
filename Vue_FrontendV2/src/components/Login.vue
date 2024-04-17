@@ -5,7 +5,7 @@
       <!-- Renderizar el formulario según el estado formType -->
       <form v-if="formType === 'signin'" @submit.prevent="handleSignIn" class="signin">
 
-        <img class="mb-4" src="logofooter.png" alt="" width="150em" height="130em">
+        <img class="mb-4" src="logofooter.png" alt="" width="160em" height="130em">
         <h1 class="h3 mb-3 fw-normal"></h1>
 
         <div class="form-floating">
@@ -64,7 +64,7 @@ export default {
     const password = ref(null);
     const router = useRouter();
     
-    const formType = ref('signup'); // Por defecto, muestra el formulario de registro
+    const formType = ref('signin');
     const handleSignIn = async () => {
       try {
         const response = await axios.post('https://localhost:3200/signin', {

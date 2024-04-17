@@ -6,12 +6,11 @@
       <h1 style="color: white">¡Bienvenido a nuestra plataforma de RRHH! Juntos, creamos un entorno donde el talento brilla y las oportunidades prosperan.</h1>
       <p style="color: white" class="lead">Encuentra tu sucursal.</p>
       <p class="lead">
-        <a
-          style="color: #4c9ae7"
-          href="/locations"
-          class="btn btn-lg btn-light fw-bold border-white bg-white"
-          >¡AQUÍ!</a
-        >
+        <a href="/locations" class="fw-bold py-1 border-white btn btn-primary pt-2" style="height:2.5em; background: linear-gradient(
+    to right,
+    #df18df,
+    #4c9ae7
+  );" type="submit">¡AQUÍ!</a>
       </p>
     </div>
   </div>
