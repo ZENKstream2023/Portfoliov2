@@ -29,9 +29,11 @@
         <a style="color: black" class="nav-link fw-bold py-1" href="/locations"
           >Sucursales</a
         >
-        <a style="color: black" class="nav-link fw-bold py-1" href="/login"
-          >Acceder</a
-        >
+        <a href="/login" class="fw-bold py-1 btn btn-primary" style="height:2.5em; margin-inline:1em; background: linear-gradient(
+    to right,
+    #df18df,
+    #4c9ae7
+  );" type="submit">Acceder</a>
         <!--<a style="color:black;" class="nav-link fw-bold py-1" href="/change">Modificar datos</a>-->
       </nav>
     </div>
