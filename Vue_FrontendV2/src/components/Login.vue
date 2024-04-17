@@ -56,13 +56,14 @@
 <script>
 import { ref} from 'vue';
 import axios from 'axios';
-
+import { useRouter } from 'vue-router';
 export default {
   name: "LoginView",
   setup() {
     const email = ref(null);
     const password = ref(null);
-
+    const router = useRouter();
+    
     const formType = ref('signup'); // Por defecto, muestra el formulario de registro
     const handleSignIn = async () => {
       try {
@@ -72,6 +73,10 @@ export default {
         });
         // Manejar la respuesta del backend si es necesario
         console.log(response)
+        if(response.status === "ok")
+        {
+          router.push('/panel');
+        }
       } catch (error) {
         // Manejar el error si la solicitud falla
         console.log(error)
@@ -85,6 +90,10 @@ const createAccount = async () => {
         });
         // Manejar la respuesta del backend si es necesario
         console.log(response)
+        if(response.status === "ok")
+        {
+          router.push('/panel');
+        }
       } catch (error) {
         // Manejar el error si la solicitud falla
       }

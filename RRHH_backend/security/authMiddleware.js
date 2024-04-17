@@ -41,20 +41,16 @@ const verifyToken = async (req, res, next) => {
     try {
         // Verificar y decodificar el token
         const decoded = jwt.verify(accessToken, secretKey);
-			console.log("DECODED", decoded)
         // Extraer el valor original del token
-        const hashedEmail = decoded.hashedEmail;
-			console.log("HASHEDEMAIL ",hashedEmail)
+        const hashed = decoded.hashed;
         // Buscar el usuario en la base de datos usando el valor original del token
-        const user = await Channel.findOne({ hashedEmail });
-			console.log("USER ",user)
+        const user = await Channel.findOne({ hashed });
         // Verificar si se encontró un usuario
         if (!user) {
             return res.status(401).json({ message: "Usuario no encontrado." });
         }
-
         // Comparar el valor original del token con el email hasheado del usuario
-        const match = await bcrypt.compare(user.email, hashedEmail);
+        const match = await bcrypt.compare(user.email,hashed );
 			console.log(match)
         // Verificar si hay coincidencia
         if (!match) {

@@ -15,7 +15,7 @@ const UserSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
-	hashedEmail: {
+	hashed: {
 		type: String,
 		required: true,
 	},
