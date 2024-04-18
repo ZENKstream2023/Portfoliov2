@@ -49,7 +49,7 @@
         list-style: none;
       "
     >
-      <div class="col-2"></div>
+      <div class="col"></div>
       <article style="margin-top: 6em" class="col-1">
         <a target="_blank">
           <img
@@ -77,7 +77,7 @@
         />
       </a>
       </article>
-      <article class="col-3">
+      <article class="col" style="margin-left:4em;">
         <nav style="text-align: left; margin-top: 2.5em">
           <a class="row" 
             >Condiciones generales</a
