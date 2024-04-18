@@ -82,6 +82,7 @@ const UserController = {
 	},
 	signin: async (req, res) => {
 		const { email, password} = req.body;
+		console.log(req.body)
 		if (!password) {
 			return res.status(400).send({
 				status: "error",
@@ -92,6 +93,7 @@ const UserController = {
 		try {
 			const user = await User.findOne({ email: email });
 			if (user) {
+				console.log("ENTRO: ",user )
 				const isMatch = await bcrypt.compare(password, user.password);
 				if (isMatch) {
 					            // Hashea el email

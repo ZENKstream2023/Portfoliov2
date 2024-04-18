@@ -26,7 +26,7 @@ const isPathAllowed = (path) => {
 
 const verifyToken = async (req, res, next) => {
  const requestedPath = req.path;
-
+    console.log(req.path)
     if (isPathAllowed( requestedPath)) {
         return next();
     }

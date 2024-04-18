@@ -1,5 +1,8 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
+import ListLocations from "../components/ListLocations";
+import LoginView from "../components/Login";
+import PanelView from "../components/Panel";
 const routes = [
 	{
 		path: "/",
@@ -9,22 +12,26 @@ const routes = [
 	{
 		path: "/locations",
 		name: "ListLocations",
-		component: () =>
+		component: ListLocations,
+		/*component: () =>
 			import(
-				/* webpackChunkName: "ListLocations" */ "../components/ListLocations"
+				 "../components/ListLocations"
 			),
+			*/
 	},
 	{
 		path: "/login",
 		name: "LoginView",
-		component: () =>
-			import(/* webpackChunkName: "ListLocations" */ "../components/Login"),
+		component: LoginView,
+		/*component: () =>
+			"../components/Login"),*/
 	},
 	{
 		path: "/panel",
 		name: "PanelView",
-		component: () =>
-			import(/* webpackChunkName: "ListLocations" */ "../components/Panel"),
+		component: PanelView,
+		/*component: () =>
+			import(*//* webpackChunkName: "ListLocations" *//* "../components/Panel"),*/
 	}
 ];
 
