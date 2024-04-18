@@ -31,8 +31,8 @@ const routes = [
 		name: "PanelView",
 		component: PanelView,
 		/*component: () =>
-			import(*//* webpackChunkName: "ListLocations" *//* "../components/Panel"),*/
-	}
+			import(*/ /* webpackChunkName: "ListLocations" */ /* "../components/Panel"),*/
+	},
 ];
 
 const router = createRouter({

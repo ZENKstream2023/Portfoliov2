@@ -23,8 +23,7 @@
         </article>
         <article>
           <p class="card-text mb-4" style="color: #727272">
-            Introduce tu dirección o, simplemente tu código postal, y encuentra
-            tu sucursal más cercana.
+            Introduce tu localidad o, simplemente tu código postal, y comprueba las sucursales cerca de tí.
           </p>
         </article>
         <article>
@@ -40,6 +39,8 @@
               border-radius: 0.25em;
             "
           />
+          <!-- Muestra un mensaje si el campo de búsqueda está vacío -->
+      <p v-if="search.trim() === ''" style="color: red;">Haz clic en el botón, para listar todos los resultados.</p>
         </article>
         <article>
           <p class="card-text mb-4">
