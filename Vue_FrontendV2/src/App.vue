@@ -69,9 +69,9 @@
         </a>
       </article>
       <article style="margin-top: 6em" class="col-1">
-        <a href="https://www.erandio.eus/es-ES/Paginas/default.aspx">
+        <a href="https://www.bizkaia.eus/es/inicio">
         <img
-          src="erandio.png"
+          src="bforualdundia.png"
           style="height:5em;"
           loading="lazy"
         />
@@ -105,7 +105,7 @@
           href="https://goo.gl/maps/CfaBBSr9raGGYMabA"
           target="_blank"
         >
-          <span style="color: white">Irailaren 23A Plaza, 1, Erandio (48950), Bizkaia</span>
+          <span style="color: white">Plaza Kurutzezar , Zaldibar (48250), Bizkaia</span>
         </a>
         <a
           style="text-decoration: none"
