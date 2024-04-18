@@ -29,6 +29,9 @@
         <a style="color: black" class="nav-link fw-bold py-1" href="/locations"
           >Sucursales</a
         >
+        <a style="color: black" class="nav-link fw-bold py-1" href="/panel"
+          >Panel</a
+        >
         <a href="/login" class="fw-bold py-1 btn btn-primary" style="height:2.5em; margin-inline:1em; background: linear-gradient(
     to right,
     #df18df,
