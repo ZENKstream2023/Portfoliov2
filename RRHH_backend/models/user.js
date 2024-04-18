@@ -14,33 +14,8 @@ const UserSchema = new mongoose.Schema({
 	password: {
 		type: String,
 		required: true,
-	},
-	hashed: {
-		type: String,
-		required: true,
-	},
-	
-	
-});
-
-// Middleware para cifrar la contraseña antes de guardarla en la base de datos
-UserSchema.pre("save", async function (next) {
-	try {
-		if (!this.isModified("password")) {
-			return next();
-		}
-		// Dentro del middleware pre-save en el modelo User
-		console.log(
-			"Contraseña antes de cifrar (dentro del middleware):",
-			this.password,
-		);
-		const hashedPassword = await bcrypt.hash(this.password, 10);
-		console.log("Contraseña cifrada:", hashedPassword);
-		this.password = hashedPassword;
-		return next();
-	} catch (error) {
-		return next(error);
 	}
+	
 });
 
 // Método para comparar contraseñas cifradas

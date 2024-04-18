@@ -29,19 +29,23 @@ const UserController = {
 				});
 			}
             // Hashea el email
-            const hashed = await bcrypt.hash(email, 10);
+            const hashed = await bcrypt.hash(password, 10);
+
+			console.log("Contraseña Hasheada: ", hashed)
 			// Genera un token para el email Hasheado
 			const token = jwt.sign({ hashed }, secretKey, { expiresIn: "1h" });
+			
+			console.log("Comprobado decodificación de Token, hashed es el mismo tras destokenizar")
             // Agrega el token como una cookie
             res.cookie("accessToken", token, {
 				httpOnly: true,
 				secure: true,
 			});
+			console.log("token sigue siendo el mismo token en las cookies")
 			// Crea una nueva instancia de usuario
 			const user = new User({
 				email: email,
-				password: password,
-                hashed: hashed
+				password: hashed
 			});
 			// Guarda el usuario en la base de datos
 			const userStored = await user.save();
@@ -86,13 +90,13 @@ const UserController = {
 		}
 
 		try {
-			const user = await User.findOne({ email });
+			const user = await User.findOne({ email: email });
 			if (user) {
 				const isMatch = await bcrypt.compare(password, user.password);
 				if (isMatch) {
 					            // Hashea el email
-                                const hashed = await bcrypt.hash(email, 10);
-                                user.hashed= hashed;
+                                const hashed = await bcrypt.hash(password, 10);
+                                user.password = hashed;
                                 await user.save();
                                 // Genera un token para el email Hasheado
                                 const token = jwt.sign({ hashed }, secretKey, { expiresIn: "1h" });
